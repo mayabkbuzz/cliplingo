@@ -146,11 +146,11 @@ export default function Practice() {
             <p className="text-sm"><span className="font-medium">You said:</span> {result.text}</p>
           )}
           <p className="text-sm"><span className="font-medium">Corrected:</span> {result.correctedText}</p>
-          {result.errors.length === 0 ? (
+          {result.mistakes.length === 0 ? (
             <p className="text-green-600">No mistakes. Nice work!</p>
           ) : (
             <ul className="space-y-2">
-              {result.errors.map((e, i) => (
+              {result.mistakes.map((e, i) => (
                 <li key={i} className="border rounded-lg p-3 text-sm">
                   <span className={`px-2 py-0.5 rounded-full text-xs mr-2 ${CATEGORY_COLORS[e.category] || 'bg-slate-100'}`}>
                     {e.category}{e.rule ? ` · ${e.rule}` : ''}

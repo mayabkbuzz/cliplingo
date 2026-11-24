@@ -12,12 +12,12 @@ router.get('/:userId', async (req, res, next) => {
       Submission.find({ userId }).sort({ createdAt: -1 }).limit(20).select('score createdAt inputType').lean(),
       Submission.aggregate([
         { $match: { userId } },
-        { $unwind: '$errors' },
+        { $unwind: '$mistakes' },
         {
           $group: {
-            _id: { category: '$errors.category', rule: '$errors.rule' },
+            _id: { category: '$mistakes.category', rule: '$mistakes.rule' },
             count: { $sum: 1 },
-            lastExample: { $last: '$errors' },
+            lastExample: { $last: '$mistakes' },
           },
         },
         { $sort: { count: -1 } },
@@ -25,8 +25,8 @@ router.get('/:userId', async (req, res, next) => {
       ]),
       Submission.aggregate([
         { $match: { userId } },
-        { $unwind: '$errors' },
-        { $group: { _id: '$errors.category', count: { $sum: 1 } } },
+        { $unwind: '$mistakes' },
+        { $group: { _id: '$mistakes.category', count: { $sum: 1 } } },
       ]),
       Submission.countDocuments({ userId }),
     ]);

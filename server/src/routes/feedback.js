@@ -22,9 +22,8 @@ router.post('/', upload.single('audio'), async (req, res, next) => {
     const inputType = req.file ? 'voice' : 'text';
     if (req.file) text = await transcribeAudio(req.file.buffer, req.file.originalname || 'audio.webm');
     if (!text || !text.trim()) return res.status(400).json({ error: 'No text or speech detected' });
-
-    const fb = await getFeedback({ text: text.trim(), clipTitle: clip.title, inputType });
-    const saved = await Submission.create({ userId, clipId, inputType, text: text.trim(), ...fb });
+const { errors, ...fb } = await getFeedback({ text: text.trim(), clipTitle: clip.title, inputType });
+const saved = await Submission.create({ userId, clipId, inputType, text: text.trim(), ...fb, mistakes: errors });
     res.json(saved);
   } catch (e) {
     next(e);

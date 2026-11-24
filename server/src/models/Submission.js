@@ -19,7 +19,7 @@ const submissionSchema = new mongoose.Schema(
     text: { type: String, required: true }, // typed text or Whisper transcript
     correctedText: String,
     score: Number, // 0-100
-    errors: [errorSchema],
+    mistakes: [errorSchema],
     tip: String,
   },
   { timestamps: true }
